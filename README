@@ -1,6 +1,5 @@
 excaliburl
 ----------
 
-A not so fancy, far from novel, and opiniated tool for extraction of URLs and
-paths from textual data through a set of independent processors that identify
-common patterns.  Prints JSONL to stdout or local file.  Not made to please.
+A not so fancy and far from novel tool for extracting URLs and paths from
+textual data.  Prints JSONL to stdout or local file.  Not made to please.

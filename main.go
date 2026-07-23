@@ -86,7 +86,6 @@ Options:
 
 func usage() {
 	fmt.Fprintf(os.Stderr, "%s\n", docs)
-	os.Exit(0)
 }
 
 func log(format string, args ...any) {
@@ -585,7 +584,6 @@ func main() {
 	})
 
 	flag.Usage = usage
-
 	flag.Parse()
 
 	var inputs []Input

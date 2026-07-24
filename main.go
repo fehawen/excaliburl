@@ -471,6 +471,18 @@ func (p *QuotedPathProcessor) Process(data []byte, file string, emit Emitter) {
 	}
 }
 
+func cleanSourceMap(s string) string {
+	if i := strings.Index(s, `\n`); i >= 0 {
+		s = s[:i]
+	}
+
+	if i := strings.Index(s, `\"`); i >= 0 {
+		s = s[:i]
+	}
+
+	return s
+}
+
 type SourceMapProcessor struct {
 	re *regexp.Regexp
 }
@@ -498,7 +510,7 @@ func (p *SourceMapProcessor) Process(data []byte, file string, emit Emitter) {
 		emit(Result{
 			File:      file,
 			Processor: p.Name(),
-			Raw:       string(m[1]),
+			Raw:       cleanSourceMap(string(m[1])),
 		})
 	}
 }

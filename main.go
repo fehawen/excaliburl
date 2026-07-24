@@ -389,9 +389,18 @@ func NewJSProcessor() *JSProcessor {
 	}
 }
 
+func trimTemplate(raw string) string {
+	if i := strings.Index(raw, "${"); i >= 0 {
+		if i > 0 {
+			raw = raw[:i]
+		}
+	}
+
+	return raw
+}
+
 type JSTemplateProcessor struct {
-	staticRe  *regexp.Regexp
-	dynamicRe *regexp.Regexp
+	re *regexp.Regexp
 }
 
 func (p *JSTemplateProcessor) Name() string {
@@ -400,19 +409,16 @@ func (p *JSTemplateProcessor) Name() string {
 
 func NewJSTemplateProcessor() *JSTemplateProcessor {
 	return &JSTemplateProcessor{
-		staticRe: regexp.MustCompile(
-			"`((?:\\/|\\.\\.?/)[^`$]*)`",
-		),
-		dynamicRe: regexp.MustCompile(
-			"`((?:\\/|\\.\\.?/)[^`]*)\\$\\{",
+		re: regexp.MustCompile(
+			"`((?:\\/|\\.\\.?/)[^`]*)`",
 		),
 	}
 }
 
 func (p *JSTemplateProcessor) Process(data []byte, file string, emit Emitter) {
-	staticMatches := p.staticRe.FindAllSubmatch(data, -1)
+	matches := p.re.FindAllSubmatch(data, -1)
 
-	for _, m := range staticMatches {
+	for _, m := range matches {
 		if len(m) < 2 {
 			continue
 		}
@@ -420,21 +426,7 @@ func (p *JSTemplateProcessor) Process(data []byte, file string, emit Emitter) {
 		emit(Result{
 			File:      file,
 			Processor: p.Name(),
-			Raw:       string(m[1]),
-		})
-	}
-
-	dynamicMatches := p.dynamicRe.FindAllSubmatch(data, -1)
-
-	for _, m := range dynamicMatches {
-		if len(m) < 2 {
-			continue
-		}
-
-		emit(Result{
-			File:      file,
-			Processor: p.Name(),
-			Raw:       string(m[1]),
+			Raw:       trimTemplate(string(m[1])),
 		})
 	}
 }

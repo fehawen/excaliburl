@@ -325,6 +325,12 @@ func (p *AbsoluteProcessor) Process(data []byte, file string, emit Emitter) {
 	}
 }
 
+func cleanHTML(s string) string {
+	s = strings.TrimRight(s, ">")
+	s = strings.TrimRight(s, "/")
+	return s
+}
+
 type HTMLProcessor struct {
 	re *regexp.Regexp
 }
@@ -352,7 +358,7 @@ func (p *HTMLProcessor) Process(data []byte, file string, emit Emitter) {
 		emit(Result{
 			File:      file,
 			Processor: p.Name(),
-			Raw:       string(m[2]),
+			Raw:       cleanHTML(string(m[2])),
 		})
 	}
 }

@@ -13,7 +13,7 @@ type AbsoluteProcessor struct {
 func NewAbsoluteProcessor() *AbsoluteProcessor {
 	return &AbsoluteProcessor{
 		re: regexp.MustCompile(
-			`((([a-zA-Z]{1,10})|s3):\/\/|www\.)[^\s"'<>\\\]\)\},]+`,
+			`[a-zA-Z][a-zA-Z0-9+.-]*://|www\.[^\s"'<>\\\]\)\},]+`,
 		),
 	}
 }

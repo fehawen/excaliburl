@@ -22,10 +22,6 @@ func (p *HTMLProcessor) Process(data []byte, file string, emit Emitter) {
 	matches := p.re.FindAllSubmatch(data, -1)
 
 	for _, m := range matches {
-		if len(m) < 3 {
-			continue
-		}
-
 		emit(result.Result{
 			File:      file,
 			Processor: "html",

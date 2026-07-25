@@ -23,10 +23,6 @@ func (p *SourceMapProcessor) Process(data []byte, file string, emit Emitter) {
 	matches := p.re.FindAllSubmatch(data, -1)
 
 	for _, m := range matches {
-		if len(m) < 2 {
-			continue
-		}
-
 		emit(result.Result{
 			File:      file,
 			Processor: "sourcemap",

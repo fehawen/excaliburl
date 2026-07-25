@@ -7,7 +7,12 @@ import (
 
 func trimURL(s string) string {
 	s = strings.TrimSpace(s)
+
 	s = strings.Trim(s, `"'`)
+
+	s = strings.TrimSuffix(s, `\"`)
+	s = strings.TrimSuffix(s, `\'`)
+
 	s = strings.TrimRight(s, `\`)
 
 	return s

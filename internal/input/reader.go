@@ -2,6 +2,19 @@ package input
 
 import "io"
 
+func ReadText(r io.Reader) ([]byte, error) {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return nil, err
+	}
+
+	if !isText(data) {
+		return nil, nil
+	}
+
+	return data, nil
+}
+
 func isText(data []byte) bool {
 	if len(data) == 0 {
 		return true
@@ -31,17 +44,4 @@ func isText(data []byte) bool {
 	ratio := float64(control) / float64(len(sample))
 
 	return ratio < 0.10
-}
-
-func ReadText(r io.Reader) ([]byte, error) {
-	data, err := io.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-
-	if !isText(data) {
-		return nil, nil
-	}
-
-	return data, nil
 }

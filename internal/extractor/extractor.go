@@ -63,7 +63,7 @@ func (e *Extractor) Process(data []byte, file string) {
 func (e *Extractor) emit(r result.Result) {
 	r.Raw = trimURL(r.Raw)
 
-	if len(r.Raw) <= 1 {
+	if r.Raw == "" {
 		return
 	}
 
